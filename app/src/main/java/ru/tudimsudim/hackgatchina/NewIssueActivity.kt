@@ -55,6 +55,8 @@ class NewIssueActivity : AppCompatActivity() {
                 ex.printStackTrace()
             }
         }
+        Toast.makeText(this, "Отправлена проблема", Toast.LENGTH_LONG).show()
+        finish()
     }
 
     val REQUEST_IMAGE_CAPTURE = 1
