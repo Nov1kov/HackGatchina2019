@@ -2,6 +2,7 @@ package ru.tudimsudim.hackgatchina
 
 import android.content.Intent
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
@@ -84,6 +85,21 @@ class Launcher : AppCompatActivity() {
 
 
     private fun updateUiWithUser(model: FirebaseUser?) {
+        val sharedPref = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+
+        with (sharedPref.edit()) {
+            putString("email", model?.email)
+            apply()
+        }
+        with (sharedPref.edit()) {
+            putString("name", model?.displayName)
+            apply()
+        }
+        with (sharedPref.edit()) {
+            putString("uid", model?.uid)
+            apply()
+        }
+
         Toast.makeText(this, "Добро пожаловать",Toast.LENGTH_LONG).show()
         startActivity(
             Intent(this, NearestIssuesActivity::class.java)
