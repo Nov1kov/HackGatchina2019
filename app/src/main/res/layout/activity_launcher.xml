@@ -10,8 +10,16 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context=".Launcher"
-        android:background="@mipmap/path10546">
+        tools:context=".Launcher">
+
+    <ImageView
+            android:src="@drawable/ic_gatchina"
+            android:layout_width="84dp"
+            android:layout_height="137dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"/>
 
     <com.google.android.gms.common.SignInButton
             android:id="@+id/sign_in_button"

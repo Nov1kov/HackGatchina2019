@@ -33,11 +33,7 @@ class IssueActivity : AppCompatActivity() {
         val sharedPref = PreferenceManager.getDefaultSharedPreferences(applicationContext)
         userUid = sharedPref.getString("uid", "")
 
-        if (!canVote()){
-            vote_fab.setImageResource(R.drawable.ic_ok)
-            val color = ContextCompat.getColor(this, R.color.VoteColor)
-            vote_fab.backgroundTintList = ColorStateList.valueOf(color)
-        }
+        reinvalidateButton()
 
         vote_fab.setOnClickListener {
             if (canVote())
@@ -58,6 +54,18 @@ class IssueActivity : AppCompatActivity() {
         exists_issue_description.text = issue.text
     }
 
+    private fun reinvalidateButton() {
+        if (!canVote()){
+            vote_fab.setImageResource(R.drawable.ic_ok)
+            val color = ContextCompat.getColor(this, R.color.VoteColor)
+            vote_fab.backgroundTintList = ColorStateList.valueOf(color)
+        }else{
+            vote_fab.setImageResource(R.drawable.ic_vote)
+            val color = ContextCompat.getColor(this, R.color.colorAccent)
+            vote_fab.backgroundTintList = ColorStateList.valueOf(color)
+        }
+    }
+
     private fun vote(){
         GlobalScope.launch(Dispatchers.Main) {
             try {
@@ -65,6 +73,7 @@ class IssueActivity : AppCompatActivity() {
                     HttpClient.vote(issue, userUid)
                 }
                 Toast.makeText(this@IssueActivity, getString(R.string.vote_success), Toast.LENGTH_SHORT).show()
+                reinvalidateButton()
             }catch (ex: Exception){
                 ex.printStackTrace()
             }
