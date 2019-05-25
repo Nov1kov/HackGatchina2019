@@ -34,7 +34,6 @@
                         android:layout_gravity="bottom"
                         android:padding="24dp"
                         android:textSize="14sp"
-                        android:layout_marginBottom="60dp"
                         android:text="@string/photo_hint"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

@@ -25,10 +25,10 @@ class NewIssueActivity : AppCompatActivity() {
         setContentView(R.layout.activity_new_issue)
 
         fab.setOnClickListener { view ->
-            dispatchTakePictureIntent()
+            postIssue()
         }
         issue_image.setOnClickListener {
-            postIssue()
+            dispatchTakePictureIntent()
         }
 
         issue = Issue()
@@ -41,7 +41,7 @@ class NewIssueActivity : AppCompatActivity() {
         launch {
             try {
                 val issueId = HttpClient.postIssue(issue)
-                issue.id = issueId
+                //issue.id = issueId
             }catch (ex: Exception){
                 ex.printStackTrace()
             }
