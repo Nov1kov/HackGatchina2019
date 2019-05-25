@@ -38,6 +38,7 @@ class NewIssueActivity : AppCompatActivity() {
     private fun postIssue(){
         issue.title = issue_header.text.toString()
         issue.text = issue_description.text.toString()
+        issue.coordinate = GatchinaApplication.geoMaster.getCoordinates()
 
         launch {
             try {

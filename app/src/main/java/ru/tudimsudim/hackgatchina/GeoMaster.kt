@@ -3,30 +3,38 @@ package ru.tudimsudim.hackgatchina
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Build
 import android.support.annotation.RequiresApi
-import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
-import android.util.Log
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.Task
 import ru.tudimsudim.hackgatchina.model.Issue
 import java.util.stream.Collectors
 
-class GeoMaster(private var activity: NearestIssuesActivity) {
+class GeoMaster(val context: Context) {
 
     var radiusGeo = 100f
 
     private var location: Location? = null
 
-    private lateinit var geofencingClient: GeofencingClient
-    private lateinit var locationCallback: LocationCallback
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private val geofencingClient: GeofencingClient by lazy {
+        LocationServices.getGeofencingClient(context)
+    }
+    private val locationCallback: LocationCallback by lazy {
+        object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                locationResult ?: return
+                    this@GeoMaster.location = locationResult.lastLocation
+            }
+        }
+    }
+    private var fusedLocationClient: FusedLocationProviderClient? = null
 
     val locationRequest = LocationRequest.create()?.apply {
         interval = 10000
@@ -34,44 +42,37 @@ class GeoMaster(private var activity: NearestIssuesActivity) {
         priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
     }
 
-
-    fun init() {
-        setupPermissions()
-
-        geofencingClient = LocationServices.getGeofencingClient(activity)
-        createLocationRequest()
-
-        locationCallback = object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult?) {
-                locationResult ?: return
-                for (location in locationResult.locations) {
-                    this@GeoMaster.location = location
-                }
-            }
+    fun getCoordinates():List<Double>{
+        if (location != null){
+            return listOf(location!!.latitude, location!!.longitude)
         }
-        getUpdatedLocations()
+        return emptyList()
     }
 
     @SuppressLint("MissingPermission")
-    fun getUpdatedLocations(): Location? {
-        fusedLocationClient.requestLocationUpdates(
+    fun init() {
+        if (GeoMasterHelper.shouldAskPermission(context) || fusedLocationClient != null){
+            return
+        }
+        createLocationRequest()
+        fusedLocationClient?.requestLocationUpdates(
             locationRequest,
             locationCallback,
             null /* Looper */
         )
-        return location
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("MissingPermission")
     fun updateGeofence(fences: List<Issue>) {
         geofencingClient.removeGeofences(geofencePendingIntent)
-
-        var collect = fences.stream().map { s ->
+        val collect = fences.filter {
+            it.coordinate.count() == 2
+        }.stream().map { s ->
             Geofence.Builder()
                 // Set the request ID of the geofence. This is a string to identify this
                 // geofence.
-                .setRequestId(s.id + ": " + s.title + "! " + s.text)
+                .setRequestId(s.id)
 
                 // Set the circular region of this geofence.
                 .setCircularRegion(s.latitude, s.longitude, radiusGeo)
@@ -87,6 +88,10 @@ class GeoMaster(private var activity: NearestIssuesActivity) {
                 // Create the geofence.
                 .build()
         }.collect(Collectors.toList())
+
+        if (collect.count() == 0) {
+            return
+        }
 
         geofencingClient.addGeofences(getGeofencingRequest(collect), geofencePendingIntent)?.run {
             addOnSuccessListener {
@@ -111,34 +116,10 @@ class GeoMaster(private var activity: NearestIssuesActivity) {
     }
 
     private val geofencePendingIntent: PendingIntent by lazy {
-        val intent = Intent(activity, GeofenceTransitionsIntentService::class.java)
+        val intent = Intent(context, GeofenceTransitionsIntentService::class.java)
         // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when calling
         // addGeofences() and removeGeofences().
-        PendingIntent.getService(activity, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-    }
-
-    private fun setupPermissions() {
-        val permission1 = ContextCompat.checkSelfPermission(
-            activity,
-            Manifest.permission.ACCESS_FINE_LOCATION
-        )
-        val permission2 = ContextCompat.checkSelfPermission(
-            activity,
-            Manifest.permission.ACCESS_COARSE_LOCATION
-        )
-
-        if (permission1 != PackageManager.PERMISSION_GRANTED || permission2 != PackageManager.PERMISSION_GRANTED) {
-            Log.i("PermissionDemo", "Permission to record denied")
-            makeRequest()
-        }
-    }
-
-
-    private fun makeRequest() {
-        ActivityCompat.requestPermissions(
-            activity,
-            arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION), 1
-        )
+        PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
     @SuppressLint("MissingPermission")
@@ -148,7 +129,7 @@ class GeoMaster(private var activity: NearestIssuesActivity) {
             LocationSettingsRequest.Builder()
                 .addLocationRequest(it)
         }
-        val client: SettingsClient = LocationServices.getSettingsClient(activity)
+        val client: SettingsClient = LocationServices.getSettingsClient(context)
         val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder?.build())
 
         task.addOnSuccessListener { response ->
@@ -163,7 +144,7 @@ class GeoMaster(private var activity: NearestIssuesActivity) {
                 // Location settings are not satisfied, but this can be fixed
                 // by showing the user a dialog.
                 try {
-                    exception.startResolutionForResult(activity, LocationSettingsStatusCodes.RESOLUTION_REQUIRED)
+                    //exception.startResolutionForResult(activity, LocationSettingsStatusCodes.RESOLUTION_REQUIRED)
                     // Show the dialog by calling startResolutionForResult(),
                     // and check the result in onActivityResult().
 
@@ -173,20 +154,32 @@ class GeoMaster(private var activity: NearestIssuesActivity) {
             }
         }
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity)
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location: Location? ->
-                this.location = location!!
-                println(location.latitude)
-                println(location.longitude)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+        fusedLocationClient?.lastLocation?.addOnSuccessListener { location: Location? ->
+            this.location = location!!
+            println(location.latitude)
+            println(location.longitude)
+        }
+        fusedLocationClient?.lastLocation?.addOnFailureListener { exception ->
+            try {
+                print(exception)
+            } catch (sendEx: IntentSender.SendIntentException) {
             }
-        fusedLocationClient.lastLocation
-            .addOnFailureListener { exception ->
-                try {
-                    print(exception)
-                } catch (sendEx: IntentSender.SendIntentException) {
-                }
-            }
+        }
     }
+}
 
+object GeoMasterHelper{
+    fun shouldAskPermission(context: Context): Boolean {
+        val permission1 = ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        )
+        val permission2 = ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+
+        return permission1 != PackageManager.PERMISSION_GRANTED || permission2 != PackageManager.PERMISSION_GRANTED
+    }
 }

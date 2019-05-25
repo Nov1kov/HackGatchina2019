@@ -5,7 +5,11 @@ data class Issue(
     var title: String = "",
     var text: String = "",
     var images: MutableCollection<String> = mutableListOf(),
-    var longitude : Double = 30.3,
-    var latitude : Double = 59.9,
+    var coordinate: List<Double> = emptyList(),
     var author: String = ""
-)
+){
+    val longitude : Double
+        get() = if (coordinate.count() == 2) coordinate[1] else 0.0
+    val latitude : Double
+        get() = if (coordinate.count() == 2) coordinate[0] else 0.0
+}
