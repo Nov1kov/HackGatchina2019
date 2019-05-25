@@ -4,4 +4,5 @@
     <string name="issue_description">Описание проблемы</string>
     <string name="image_uploaded">Картинка загружена</string>
     <string name="photo_hint">Сфотографировать или загрузить фото</string>
+    <string name="vote_success">Ваш голос учтен!</string>
 </resources>

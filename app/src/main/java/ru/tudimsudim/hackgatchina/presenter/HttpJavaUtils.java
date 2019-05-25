@@ -1,7 +1,12 @@
 package ru.tudimsudim.hackgatchina.presenter;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.graphics.Bitmap;
+import android.util.Base64;
+import android.util.Log;
 import android.widget.Toast;
 import com.android.volley.*;
 import com.android.volley.toolbox.Volley;
@@ -11,6 +16,8 @@ import ru.tudimsudim.hackgatchina.R;
 import ru.tudimsudim.hackgatchina.model.Issue;
 
 import java.io.ByteArrayOutputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 

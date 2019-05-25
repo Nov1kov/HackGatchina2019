@@ -77,6 +77,29 @@ object HttpClient{
     }
 
     fun vote(issue: Issue) {
+        val urlFull = "$address/issues/vote/${issue.id}"
 
+        return URL(urlFull)
+            .openConnection()
+            .let {
+                it as HttpURLConnection
+            }.apply {
+                setRequestProperty("Content-Type", "application/json; charset=utf-8")
+                requestMethod = "POST"
+            }.let {
+                if (it.responseCode == 200) it.inputStream else it.errorStream
+            }.let { streamToRead ->
+                BufferedReader(InputStreamReader(streamToRead)).use {
+                    val response = StringBuffer()
+                    var inputLine = it.readLine()
+                    while (inputLine != null) {
+                        response.append(inputLine)
+                        inputLine = it.readLine()
+                    }
+                    it.close()
+                    val gson = Gson()
+                   response.toString()
+                }
+            }
     }
 }

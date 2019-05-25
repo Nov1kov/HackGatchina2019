@@ -50,7 +50,8 @@ class Launcher : AppCompatActivity() {
     public override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
-        updateUiWithUser(auth.currentUser)
+        if (auth.currentUser != null)
+            updateUiWithUser(auth.currentUser)
     }
 
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
@@ -104,6 +105,7 @@ class Launcher : AppCompatActivity() {
         startActivity(
             Intent(this, NearestIssuesActivity::class.java)
         )
+        finish()
     }
 
 }

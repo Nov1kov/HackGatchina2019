@@ -4,13 +4,19 @@ import android.content.res.ColorStateList
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_issue.*
 import kotlinx.android.synthetic.main.activity_new_issue.*
+import kotlinx.coroutines.*
+import kotlinx.coroutines.android.Main
 import ru.tudimsudim.hackgatchina.model.Issue
 import ru.tudimsudim.hackgatchina.presenter.HttpClient
+import java.lang.Exception
 
 class IssueActivity : AppCompatActivity() {
+
+    private lateinit var issue: Issue
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,7 +25,7 @@ class IssueActivity : AppCompatActivity() {
 
         val iss = GatchinaApplication.data.issue(issue_id)
 
-        val issue : Issue = if (iss == null) Issue() else {
+        issue = if (iss == null) Issue() else {
             iss
         }
 
@@ -31,7 +37,7 @@ class IssueActivity : AppCompatActivity() {
 
         vote_fab.setOnClickListener {
             if (canVote())
-                HttpClient.vote(issue)
+                this.vote()
             else
                 this.finish()
         }
@@ -46,6 +52,19 @@ class IssueActivity : AppCompatActivity() {
 
         exists_issue_header.text = issue.title
         exists_issue_description.text = issue.text
+    }
+
+    private fun vote(){
+        GlobalScope.launch(Dispatchers.Main) {
+            try {
+                withContext(Dispatchers.IO) {
+                    HttpClient.vote(issue)
+                }
+                Toast.makeText(this@IssueActivity, getString(R.string.vote_success), Toast.LENGTH_SHORT).show()
+            }catch (ex: Exception){
+                ex.printStackTrace()
+            }
+        }
     }
 
     private fun canVote(): Boolean {

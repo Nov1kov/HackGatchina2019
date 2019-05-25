@@ -20,6 +20,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.android.Main
 import ru.tudimsudim.hackgatchina.model.Issue
 import ru.tudimsudim.hackgatchina.presenter.HttpClient
+import ru.tudimsudim.hackgatchina.presenter.HttpJavaUtils
 import java.lang.Exception
 
 @SuppressLint("ByteOrderMark")
