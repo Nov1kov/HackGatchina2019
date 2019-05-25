@@ -20,7 +20,7 @@
             android:name=".GatchinaApplication"
             android:theme="@style/AppTheme">
         <activity
-                android:name=".ui.login.Launcher"
+                android:name=".Launcher"
                 android:label="@string/title_activity_launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

@@ -1,4 +1,4 @@
-package ru.tudimsudim.hackgatchina.ui.login
+package ru.tudimsudim.hackgatchina
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,8 +15,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.activity_launcher.*
-import ru.tudimsudim.hackgatchina.NearestIssuesActivity
-import ru.tudimsudim.hackgatchina.R
 
 
 class Launcher : AppCompatActivity() {
@@ -51,8 +49,7 @@ class Launcher : AppCompatActivity() {
     public override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = auth.currentUser
-        updateUiWithUser(currentUser)
+        updateUiWithUser(auth.currentUser)
     }
 
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
@@ -62,15 +59,8 @@ class Launcher : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    val user = auth.currentUser
-                    updateUiWithUser(user)
-                } else {
-                    // If sign in fails, display a message to the user.
-//                    Snackbar.make(main_layout, "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
-                    updateUiWithUser(null)
+                    updateUiWithUser(auth.currentUser)
                 }
-
-                // ...
             }
     }
 
@@ -94,19 +84,7 @@ class Launcher : AppCompatActivity() {
 
 
     private fun updateUiWithUser(model: FirebaseUser?) {
-        if (model == null) {
-            Toast.makeText(this, "Errore", Toast.LENGTH_SHORT).show()
-
-        }
-//        val welcome = getString(R.string.welcome)
-//        val displayName = model.displayName
-//        // TODO : initiate successful logged in experience
-//        Toast.makeText(
-//            applicationContext,
-//            "$welcome $displayName",
-//            Toast.LENGTH_LONG
-//        ).show()
-//
+        Toast.makeText(this, "Добро пожаловать",Toast.LENGTH_LONG).show()
         startActivity(
             Intent(this, NearestIssuesActivity::class.java)
         )
