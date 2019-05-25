@@ -8,6 +8,7 @@ import android.provider.MediaStore
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.Toast
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_new_issue.*
 import kotlinx.coroutines.launch
 import ru.tudimsudim.hackgatchina.model.Issue
