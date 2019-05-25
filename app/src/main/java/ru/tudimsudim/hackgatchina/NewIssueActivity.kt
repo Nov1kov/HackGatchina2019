@@ -4,14 +4,17 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity;
 
 import kotlinx.android.synthetic.main.activity_new_issue.*
 import kotlinx.coroutines.launch
-import java.net.URL
+import ru.tudimsudim.hackgatchina.model.Issue
+import ru.tudimsudim.hackgatchina.presenter.HttpClient
 
 class NewIssueActivity : AppCompatActivity() {
+
+    private lateinit var issue : Issue
+    private var imageUrl : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,17 +25,22 @@ class NewIssueActivity : AppCompatActivity() {
             dispatchTakePictureIntent()
         }
         issue_image.setOnClickListener {
-            send()
+            postIssue()
         }
     }
 
-    private fun send(){
-        var jsonStr = ""
+    private fun postIssue(){
+        var issueId = ""
+        val isssue = Issue(
+            "",
+            issue_header.text.toString(),
+            issue_description.text.toString(),
+            imageUrl
+            )
         launch {
-
-            jsonStr = URL("https://google.com").readText()
+            issueId = HttpClient.postIssue(isssue)
         }
-        println(jsonStr)
+        println(issueId)
     }
 
     val REQUEST_IMAGE_CAPTURE = 1
@@ -49,6 +57,7 @@ class NewIssueActivity : AppCompatActivity() {
        // super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
             val imageBitmap = data.extras.get("data") as Bitmap
+
             issue_image.setImageBitmap(imageBitmap)
         }
     }

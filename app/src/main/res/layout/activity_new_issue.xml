@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/root"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".NewIssueActivity">
@@ -22,12 +22,48 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <ImageView
-            android:id="@+id/issue_image"
-            android:src="@android:color/darker_gray"
+    <android.support.v4.widget.NestedScrollView
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="300dp"/>
+            android:orientation="vertical">
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+            <ImageView
+                    android:id="@+id/issue_image"
+                    android:scaleType="centerCrop"
+                    android:src="@android:color/darker_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="300dp"/>
+
+            <android.support.design.widget.TextInputEditText
+                    android:maxLines="1"
+                    android:inputType="text"
+                    android:imeOptions="actionNext"
+                    android:id="@+id/issue_header"
+                    android:hint="@string/header_issue_hint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+
+            <android.support.design.widget.TextInputEditText
+                    android:id="@+id/issue_description"
+                    android:inputType="textMultiLine"
+                    android:imeOptions="actionDone"
+                    android:hint="@string/issue_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
 
     <android.support.design.widget.FloatingActionButton
             app:layout_anchor="@id/issue_image"
@@ -38,8 +74,6 @@
             android:layout_height="wrap_content"
             app:srcCompat="@android:drawable/ic_input_add"
     />
-
-
 
 
 </android.support.design.widget.CoordinatorLayout>
