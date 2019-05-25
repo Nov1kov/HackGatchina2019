@@ -139,7 +139,7 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
     }
 
     /**
-     * Write string data into header and data output stream.
+     * Write string data into title and data output stream.
      *
      * @param dataOutputStream data output stream handle string parsing
      * @param parameterName    name of input
@@ -154,7 +154,7 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
     }
 
     /**
-     * Write data file into header and data output stream.
+     * Write data file into title and data output stream.
      *
      * @param dataOutputStream data output stream handle data parsing
      * @param dataFile         data byte as DataPart from collection

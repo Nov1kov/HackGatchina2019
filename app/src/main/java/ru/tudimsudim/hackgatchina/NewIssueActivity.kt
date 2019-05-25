@@ -5,6 +5,8 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
 import android.support.v7.app.AppCompatActivity;
+import android.view.View
+import android.widget.Toast
 
 import kotlinx.android.synthetic.main.activity_new_issue.*
 import kotlinx.coroutines.launch
@@ -21,7 +23,6 @@ class NewIssueActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_issue)
-        setSupportActionBar(toolbar)
 
         fab.setOnClickListener { view ->
             dispatchTakePictureIntent()
@@ -34,8 +35,8 @@ class NewIssueActivity : AppCompatActivity() {
     }
 
     private fun postIssue(){
-        issue.header = issue_header.text.toString()
-        issue.description = issue_description.text.toString()
+        issue.title = issue_header.text.toString()
+        issue.text = issue_description.text.toString()
 
         launch {
             try {
@@ -62,7 +63,18 @@ class NewIssueActivity : AppCompatActivity() {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
             val imageBitmap = data.extras.get("data") as Bitmap
             issue_image.setImageBitmap(imageBitmap)
-            HttpJavaUtils.uploadBitmap(this, imageBitmap, issue)
+            photo_hint.visibility = View.GONE
+            issue_image.visibility = View.VISIBLE
+            HttpJavaUtils.uploadBitmap(this, imageBitmap, issue, {
+                val imageUrl = String(it.data)
+                issue.images.add(imageUrl)
+                val resultMessage = this.getString(R.string.image_uploaded)
+                Toast.makeText(this, imageUrl, Toast.LENGTH_SHORT).show()
+            },
+            {
+                val statusCode = if (it.networkResponse != null) it.networkResponse.statusCode else 0
+                Toast.makeText(this, it.message + " code: " + statusCode, Toast.LENGTH_SHORT).show()
+            })
         }
     }
 }

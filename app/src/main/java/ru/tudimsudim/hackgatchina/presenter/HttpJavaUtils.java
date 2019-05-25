@@ -22,29 +22,18 @@ public class HttpJavaUtils {
         return byteArrayOutputStream.toByteArray();
     }
 
-    public static void uploadBitmap(final Context context, final Bitmap bitmap, final Issue issue) {
+    public static void uploadBitmap(final Context context, final Bitmap bitmap, final Issue issue,
+                                    Response.Listener<NetworkResponse> successListener,
+                                    Response.ErrorListener errorListener) {
 
         //getting the tag from the edittext
         final String url = HttpClient.INSTANCE.getAddress() + "/images";
 
         //our custom volley request
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, url,
-                new Response.Listener<NetworkResponse>() {
-                    @Override
-                    public void onResponse(NetworkResponse response) {
-                        String imageUrl = new String(response.data);
-                        issue.setImageUrl(imageUrl);
-                        String resultMessage = context.getString(R.string.image_uploaded);
-                        Toast.makeText(context, imageUrl, Toast.LENGTH_SHORT).show();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        int statusCode = error.networkResponse != null ? error.networkResponse.statusCode : 0;
-                        Toast.makeText(context, error.getMessage() + " code: " + statusCode, Toast.LENGTH_SHORT).show();
-                    }
-                }) {
+                successListener,
+                errorListener)
+        {
 
             /*
              * If you want to add more parameters with the image

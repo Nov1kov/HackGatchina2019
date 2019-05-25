@@ -98,4 +98,5 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="image_uploaded">Картинка загружена</string>
+    <string name="photo_hint">Сфотографировать или загрузить фото</string>
 </resources>
