@@ -1,6 +1,7 @@
 package ru.tudimsudim.hackgatchina.model
 
 data class Issue(
+    var _id: ObjId = ObjId(),
     var id: String = "",
     var title: String = "",
     var text: String = "",
@@ -13,3 +14,8 @@ data class Issue(
     val latitude : Double
         get() = if (coordinate.count() == 2) coordinate[0] else 0.0
 }
+
+data class ObjId(
+    var oid: String = ""
+
+)

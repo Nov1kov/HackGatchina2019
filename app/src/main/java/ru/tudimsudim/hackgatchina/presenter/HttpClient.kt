@@ -75,4 +75,8 @@ object HttpClient{
                 }
             }
     }
+
+    fun vote(issue: Issue) {
+
+    }
 }

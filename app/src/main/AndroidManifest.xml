@@ -6,18 +6,25 @@
             android:name="android.hardware.camera"
             android:required="true"/>
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
+            android:name=".GatchinaApplication"
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
-            android:name=".GatchinaApplication"
             android:theme="@style/AppTheme">
+        <activity android:name=".IssueActivity"
+                  android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
         <service android:name=".GeofenceTransitionsIntentService"/>
+
         <activity
                 android:name=".MainActivity"
                 android:label="@string/title_activity_main">
@@ -38,6 +45,5 @@
             </intent-filter>
         </activity>
     </application>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
 </manifest>

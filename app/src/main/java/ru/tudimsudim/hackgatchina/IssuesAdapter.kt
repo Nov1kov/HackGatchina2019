@@ -9,10 +9,16 @@ import com.bumptech.glide.Glide
 import ru.tudimsudim.hackgatchina.model.Issue
 import ru.tudimsudim.hackgatchina.presenter.HttpClient
 
+interface IssueItemClick {
+    fun onClick(index: Int)
+}
 
-class IssuesAdapter(val screenWidth: Int) : RecyclerView.Adapter<IssuesAdapter.IssueViewHolder>() {
+
+class IssuesAdapter(val screenWidth: Int, val listener: IssueItemClick) :
+    RecyclerView.Adapter<IssuesAdapter.IssueViewHolder>() {
 
     var issues = emptyList<Issue>()
+
 
     override fun onBindViewHolder(p0: IssueViewHolder, p1: Int) {
         p0.bind(issues[p1])
@@ -27,6 +33,9 @@ class IssuesAdapter(val screenWidth: Int) : RecyclerView.Adapter<IssuesAdapter.I
         val vh = IssueViewHolder(inflater, p0)
         val verticalPadding = p0.context.resources.getDimensionPixelSize(R.dimen.issue_item_vertical_padding)
         vh.itemView.layoutParams!!.height = screenWidth - verticalPadding
+        vh.itemView.setOnClickListener {
+            listener.onClick(vh.adapterPosition)
+        }
         return vh
     }
 
@@ -37,30 +46,30 @@ class IssuesAdapter(val screenWidth: Int) : RecyclerView.Adapter<IssuesAdapter.I
 
     class IssueViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         RecyclerView.ViewHolder(inflater.inflate(R.layout.issue_list_item, parent, false)) {
-            var author: TextView? = null
-            var description: TextView? = null
-            var image: ImageView? = null
+        var author: TextView? = null
+        var description: TextView? = null
+        var image: ImageView? = null
 
-            init {
-                author = itemView.findViewById(R.id.issue_author)
-                description = itemView.findViewById(R.id.issue_description)
-                image = itemView.findViewById(R.id.image_view)
+        init {
+            author = itemView.findViewById(R.id.issue_author)
+            description = itemView.findViewById(R.id.issue_description)
+            image = itemView.findViewById(R.id.image_view)
+        }
+
+        fun bind(movie: Issue) {
+            author?.text = movie.author
+            description?.text = movie.text
+
+            if (image != null && movie.images.count() > 0) {
+                val imageUrl = HttpClient.address + "/images/" + movie.images.elementAt(0)
+                Glide
+                    .with(image!!.context)
+                    .load(imageUrl)
+                    .centerCrop()
+                    .into(image!!);
             }
 
-            fun bind(movie: Issue) {
-                author?.text = movie.author
-                description?.text = movie.text
-
-                if (image != null && movie.images.count() > 0){
-                    val imageUrl = HttpClient.address + "/images/" + movie.images.elementAt(0)
-                    Glide
-                        .with(image!!.context)
-                        .load(imageUrl)
-                        .centerCrop()
-                        .into(image!!);
-                }
-
-            }
+        }
 
     }
 

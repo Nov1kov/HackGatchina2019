@@ -6,29 +6,24 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.support.annotation.RequiresApi
 import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.util.DisplayMetrics
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_scrolling.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.android.Main
 import ru.tudimsudim.hackgatchina.model.Issue
-import java.util.*
 import ru.tudimsudim.hackgatchina.presenter.HttpClient
 import java.lang.Exception
 
 @SuppressLint("ByteOrderMark")
-class NearestIssuesActivity : AppCompatActivity() {
+class NearestIssuesActivity : AppCompatActivity(), IssueItemClick {
 
     private lateinit var geo: GeoMaster
     private lateinit var adapter : IssuesAdapter
@@ -50,9 +45,17 @@ class NearestIssuesActivity : AppCompatActivity() {
         val width = displayMetrics.widthPixels
 
         recycler_view.layoutManager = LinearLayoutManager(this)
-        adapter = IssuesAdapter(width)
+        adapter = IssuesAdapter(width, this)
         recycler_view.adapter = adapter
 
+        setupPermissions()
+    }
+
+    override fun onClick(index: Int) {
+        val issue_id = adapter.issues[index].id
+        val intent = Intent(this, IssueActivity::class.java)
+        intent.putExtra(IssueActivity.ID_ISSUE_KEY, issue_id)
+        startActivity(intent)
     }
 
     //RUNTIME PERMISSIONS
@@ -66,7 +69,6 @@ class NearestIssuesActivity : AppCompatActivity() {
             makeRequest()
         }
     }
-
 
     private fun makeRequest() {
         ActivityCompat.requestPermissions(
@@ -97,19 +99,18 @@ class NearestIssuesActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         GlobalScope.launch(Dispatchers.Main) {
-            var issues = emptyList<Issue>()
             try {
                 withContext(Dispatchers.IO) {
-                    issues = HttpClient.getIssues()
+                    GatchinaApplication.data.issues = HttpClient.getIssues()
                 }
             }catch (ex: Exception){
                 ex.printStackTrace()
             }
 
-            adapter.update(issues)
+            adapter.update(GatchinaApplication.data.issues)
 
             try {
-                geo.updateGeofence(issues)
+                geo.updateGeofence(GatchinaApplication.data.issues)
             }catch (ex: Exception){
                 ex.printStackTrace()
             }
