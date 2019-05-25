@@ -8,7 +8,8 @@ data class Issue(
     var coordinate: List<Double> = emptyList(),
     var author: String = "",
     var authorUid: String = "",
-    var authorEmail: String = ""
+    var authorEmail: String = "",
+    var users_like: MutableCollection<String> = mutableListOf()
 ){
     val longitude : Double
         get() = if (coordinate.count() == 2) coordinate[1] else 0.0

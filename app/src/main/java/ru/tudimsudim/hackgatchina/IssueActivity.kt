@@ -3,11 +3,11 @@ package ru.tudimsudim.hackgatchina
 import android.content.res.ColorStateList
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.v4.content.ContextCompat
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_issue.*
-import kotlinx.android.synthetic.main.activity_new_issue.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.android.Main
 import ru.tudimsudim.hackgatchina.model.Issue
@@ -17,6 +17,7 @@ import java.lang.Exception
 class IssueActivity : AppCompatActivity() {
 
     private lateinit var issue: Issue
+    private lateinit var userUid: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +29,9 @@ class IssueActivity : AppCompatActivity() {
         issue = if (iss == null) Issue() else {
             iss
         }
+
+        val sharedPref = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        userUid = sharedPref.getString("uid", "")
 
         if (!canVote()){
             vote_fab.setImageResource(R.drawable.ic_ok)
@@ -58,7 +62,7 @@ class IssueActivity : AppCompatActivity() {
         GlobalScope.launch(Dispatchers.Main) {
             try {
                 withContext(Dispatchers.IO) {
-                    HttpClient.vote(issue)
+                    HttpClient.vote(issue, userUid)
                 }
                 Toast.makeText(this@IssueActivity, getString(R.string.vote_success), Toast.LENGTH_SHORT).show()
             }catch (ex: Exception){
@@ -68,7 +72,7 @@ class IssueActivity : AppCompatActivity() {
     }
 
     private fun canVote(): Boolean {
-        return true
+        return !issue.users_like.contains(userUid)
     }
 
     companion object {
