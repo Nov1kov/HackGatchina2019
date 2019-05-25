@@ -7,7 +7,9 @@ data class Issue(
     var text: String = "",
     var images: MutableCollection<String> = mutableListOf(),
     var coordinate: List<Double> = emptyList(),
-    var author: String = ""
+    var author: String = "",
+    var authorUid: String = "",
+    var authorEmail: String = ""
 ){
     val longitude : Double
         get() = if (coordinate.count() == 2) coordinate[1] else 0.0

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "531092360465",
+    "firebase_url": "https://impressive-gear-241718.firebaseio.com",
+    "project_id": "impressive-gear-241718",
+    "storage_bucket": "impressive-gear-241718.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:531092360465:android:4d4bb10cb468e25a",
+        "android_client_info": {
+          "package_name": "ru.tudimsudim.hackgatchina"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "531092360465-eeb9mabjscvcn2t5q1l3ql0d0ma7lg4d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ru.tudimsudim.hackgatchina",
+            "certificate_hash": "5f71022a2b5a9d77d91c506d1f526f3104ad3b65"
+          }
+        },
+        {
+          "client_id": "531092360465-g2hg0hqavnchtdrg65dpffjk02nsn2gj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBA9Gy-rh2Pvw4htvc1WblwRkF5GUBiBtg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "531092360465-g2hg0hqavnchtdrg65dpffjk02nsn2gj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
