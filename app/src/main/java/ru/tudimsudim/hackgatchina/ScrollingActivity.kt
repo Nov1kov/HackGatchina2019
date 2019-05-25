@@ -1,17 +1,16 @@
 package ru.tudimsudim.hackgatchina
 
 import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.AlarmClock.EXTRA_MESSAGE
-import android.provider.MediaStore
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_scrolling.*
 
 class ScrollingActivity : AppCompatActivity() {
+
+    var geo: GeoMaster = GeoMaster(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,6 +19,14 @@ class ScrollingActivity : AppCompatActivity() {
         fab.setOnClickListener { view ->
             openNewIssue();
         }
+        geo.init()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        var locations = geo.getUpdatedLocations()
+        println(locations?.longitude)
+        println(locations?.latitude)
     }
 
     private fun openNewIssue() {
