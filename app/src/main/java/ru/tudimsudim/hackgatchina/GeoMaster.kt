@@ -12,7 +12,7 @@ import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.Task
 
-class GeoMaster(private var activity: ScrollingActivity) {
+class GeoMaster(private var activity: NearestIssuesActivity) {
 
     private var location: Location? = null
 

@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class HttpJavaUtils {
 
-    public static byte[] getFileDataFromDrawable(Bitmap bitmap) {
+    private static byte[] getFileDataFromDrawable(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 80, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
