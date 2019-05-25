@@ -10,6 +10,8 @@ import kotlinx.android.synthetic.main.activity_new_issue.*
 import kotlinx.coroutines.launch
 import ru.tudimsudim.hackgatchina.model.Issue
 import ru.tudimsudim.hackgatchina.presenter.HttpClient
+import ru.tudimsudim.hackgatchina.presenter.HttpJavaUtils
+import java.lang.Exception
 
 class NewIssueActivity : AppCompatActivity() {
 
@@ -38,7 +40,11 @@ class NewIssueActivity : AppCompatActivity() {
             imageUrl
             )
         launch {
-            issueId = HttpClient.postIssue(isssue)
+            try {
+                issueId = HttpClient.postIssue(isssue)
+            }catch (ex: Exception){
+                ex.printStackTrace()
+            }
         }
         println(issueId)
     }
@@ -57,8 +63,8 @@ class NewIssueActivity : AppCompatActivity() {
        // super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
             val imageBitmap = data.extras.get("data") as Bitmap
-
             issue_image.setImageBitmap(imageBitmap)
+            HttpJavaUtils.uploadBitmap(this, imageBitmap)
         }
     }
 }

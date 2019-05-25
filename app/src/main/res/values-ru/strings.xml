@@ -2,4 +2,5 @@
 <resources>
     <string name="header_issue_hint">Заголовок</string>
     <string name="issue_description">Описание проблемы</string>
+    <string name="image_uploaded">Картинка загружена</string>
 </resources>
