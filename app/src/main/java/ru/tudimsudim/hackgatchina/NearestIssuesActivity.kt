@@ -10,12 +10,14 @@ import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.support.annotation.RequiresApi
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.util.DisplayMetrics
 import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_scrolling.*
+import kotlinx.coroutines.*
+import kotlinx.coroutines.android.Main
 import ru.tudimsudim.hackgatchina.model.Issue
 import java.util.*
-import kotlinx.coroutines.launch
 import ru.tudimsudim.hackgatchina.presenter.HttpClient
 import java.lang.Exception
 
@@ -45,8 +47,14 @@ class NearestIssuesActivity : AppCompatActivity() {
             )
         )
 
+
+        val displayMetrics = DisplayMetrics()
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics)
+        val height = displayMetrics.heightPixels
+        val width = displayMetrics.widthPixels
+
         recycler_view.layoutManager = LinearLayoutManager(this)
-        adapter = IssuesAdapter()
+        adapter = IssuesAdapter(width)
         recycler_view.adapter = adapter
 
     }
@@ -58,15 +66,18 @@ class NearestIssuesActivity : AppCompatActivity() {
         println(locations?.longitude)
         println(locations?.latitude)
 
-        var issues = emptyList<Issue>()
-        launch{
+
+        GlobalScope.launch(Dispatchers.Main) {
+            var issues = emptyList<Issue>()
             try {
-                issues = HttpClient.getIssues()
+                val document = withContext(Dispatchers.IO) {
+                    issues = HttpClient.getIssues()
+                }
             }catch (ex: Exception){
                 ex.printStackTrace()
             }
+            adapter.update(issues)
         }
-        adapter.update(issues)
     }
 
     private fun openNewIssue() {

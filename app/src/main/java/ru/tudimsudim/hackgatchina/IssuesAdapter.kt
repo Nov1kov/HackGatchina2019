@@ -5,9 +5,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import ru.tudimsudim.hackgatchina.model.Issue
+import ru.tudimsudim.hackgatchina.presenter.HttpClient
 
-class IssuesAdapter : RecyclerView.Adapter<IssuesAdapter.IssueViewHolder>() {
+
+class IssuesAdapter(val screenWidth: Int) : RecyclerView.Adapter<IssuesAdapter.IssueViewHolder>() {
 
     var issues = emptyList<Issue>()
 
@@ -21,7 +24,10 @@ class IssuesAdapter : RecyclerView.Adapter<IssuesAdapter.IssueViewHolder>() {
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): IssueViewHolder {
         val inflater = LayoutInflater.from(p0.context)
-        return IssueViewHolder(inflater, p0)
+        val vh = IssueViewHolder(inflater, p0)
+        val verticalPadding = p0.context.resources.getDimensionPixelSize(R.dimen.issue_item_vertical_padding)
+        vh.itemView.layoutParams!!.height = screenWidth - verticalPadding
+        return vh
     }
 
     fun update(issues: List<Issue>) {
@@ -31,9 +37,9 @@ class IssuesAdapter : RecyclerView.Adapter<IssuesAdapter.IssueViewHolder>() {
 
     class IssueViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         RecyclerView.ViewHolder(inflater.inflate(R.layout.issue_list_item, parent, false)) {
-            private var author: TextView? = null
-            private var description: TextView? = null
-            private var image: ImageView? = null
+            var author: TextView? = null
+            var description: TextView? = null
+            var image: ImageView? = null
 
             init {
                 author = itemView.findViewById(R.id.issue_author)
@@ -44,6 +50,16 @@ class IssuesAdapter : RecyclerView.Adapter<IssuesAdapter.IssueViewHolder>() {
             fun bind(movie: Issue) {
                 author?.text = movie.author
                 description?.text = movie.text
+
+                if (image != null && movie.images.count() > 0){
+                    val imageUrl = HttpClient.address + "/images/" + movie.images.elementAt(0)
+                    Glide
+                        .with(image!!.context)
+                        .load(imageUrl)
+                        .centerCrop()
+                        .into(image!!);
+                }
+
             }
 
     }

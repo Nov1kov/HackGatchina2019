@@ -7,6 +7,7 @@ import android.provider.MediaStore
 import android.support.v7.app.AppCompatActivity;
 import android.view.View
 import android.widget.Toast
+import com.bumptech.glide.Glide
 
 import kotlinx.android.synthetic.main.activity_new_issue.*
 import kotlinx.coroutines.launch
@@ -62,7 +63,13 @@ class NewIssueActivity : AppCompatActivity() {
        // super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
             val imageBitmap = data.extras.get("data") as Bitmap
-            issue_image.setImageBitmap(imageBitmap)
+
+            Glide
+                .with(this)
+                .load(imageBitmap)
+                .centerCrop()
+                .into(issue_image);
+
             photo_hint.visibility = View.GONE
             issue_image.visibility = View.VISIBLE
             HttpJavaUtils.uploadBitmap(this, imageBitmap, issue, {
