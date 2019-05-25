@@ -8,6 +8,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 import ru.tudimsudim.hackgatchina.R;
+import ru.tudimsudim.hackgatchina.model.Issue;
 
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
@@ -21,7 +22,7 @@ public class HttpJavaUtils {
         return byteArrayOutputStream.toByteArray();
     }
 
-    public static void uploadBitmap(final Context context, final Bitmap bitmap) {
+    public static void uploadBitmap(final Context context, final Bitmap bitmap, final Issue issue) {
 
         //getting the tag from the edittext
         final String url = HttpClient.INSTANCE.getAddress() + "/images";
@@ -32,6 +33,7 @@ public class HttpJavaUtils {
                     @Override
                     public void onResponse(NetworkResponse response) {
                         String imageUrl = new String(response.data);
+                        issue.setImageUrl(imageUrl);
                         String resultMessage = context.getString(R.string.image_uploaded);
                         Toast.makeText(context, imageUrl, Toast.LENGTH_SHORT).show();
                     }

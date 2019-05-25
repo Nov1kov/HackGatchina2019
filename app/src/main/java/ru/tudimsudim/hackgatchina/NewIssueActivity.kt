@@ -29,24 +29,22 @@ class NewIssueActivity : AppCompatActivity() {
         issue_image.setOnClickListener {
             postIssue()
         }
+
+        issue = Issue()
     }
 
     private fun postIssue(){
-        var issueId = ""
-        val isssue = Issue(
-            "",
-            issue_header.text.toString(),
-            issue_description.text.toString(),
-            imageUrl
-            )
+        issue.header = issue_header.text.toString()
+        issue.description = issue_description.text.toString()
+
         launch {
             try {
-                issueId = HttpClient.postIssue(isssue)
+                val issueId = HttpClient.postIssue(issue)
+                issue.id = issueId
             }catch (ex: Exception){
                 ex.printStackTrace()
             }
         }
-        println(issueId)
     }
 
     val REQUEST_IMAGE_CAPTURE = 1
@@ -64,7 +62,7 @@ class NewIssueActivity : AppCompatActivity() {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
             val imageBitmap = data.extras.get("data") as Bitmap
             issue_image.setImageBitmap(imageBitmap)
-            HttpJavaUtils.uploadBitmap(this, imageBitmap)
+            HttpJavaUtils.uploadBitmap(this, imageBitmap, issue)
         }
     }
 }
