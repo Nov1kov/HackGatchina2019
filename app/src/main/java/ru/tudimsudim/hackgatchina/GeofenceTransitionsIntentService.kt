@@ -10,9 +10,11 @@ import android.support.v4.app.NotificationManagerCompat
 import android.util.Log
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingEvent
+import ru.tudimsudim.hackgatchina.model.Issue
 import ru.tudimsudim.hackgatchina.presenter.HttpClient
 
 class GeofenceTransitionsIntentService : IntentService("Geofence-Service") {
+
     override fun onHandleIntent(intent: Intent?) {
         val geofencingEvent = GeofencingEvent.fromIntent(intent)
         if (geofencingEvent.hasError()) {
@@ -24,30 +26,29 @@ class GeofenceTransitionsIntentService : IntentService("Geofence-Service") {
         val geofenceTransition = geofencingEvent.geofenceTransition
 
         // Test that the reported transition was of interest.
-        if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER ||
-            geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT
-        ) {
+        if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER) {
 
             // Get the geofences that were triggered. A single event can trigger
             // multiple geofences.
             val triggeringGeofences = geofencingEvent.triggeringGeofences
 
             // Send notification and log the transition details.
-            var requestId = triggeringGeofences.get(0).requestId
-            sendNotification(requestId)
+            val uid = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+                .getString("uid", "")
+            for (i in 0 until triggeringGeofences.size) {
+                var issue = HttpClient.getIssueById(triggeringGeofences[i].requestId)
+                if (!issue.users_like.contains(uid)) {
+                    sendNotification(issue)
+                    return
+                }
+            }
         } else {
             // Log the error.
             Log.e(TAG, "Alarma! Geifencing errore: $geofenceTransition")
         }
     }
 
-    private fun sendNotification(requestId: String) {
-        var issue = HttpClient.getIssueById(requestId)
-        val uid = PreferenceManager.getDefaultSharedPreferences(applicationContext)
-            .getString("uid", "")
-        if (issue.users_like.contains(uid)){
-            return
-        }
+    private fun sendNotification(issue: Issue) {
 
         val intent = Intent(this, IssueActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -65,6 +66,8 @@ class GeofenceTransitionsIntentService : IntentService("Geofence-Service") {
                     .bigText(issue.text + " - " + issue.address)
             )
             .setContentIntent(pendingIntent)
+            .setOnlyAlertOnce(true)
+            .setAutoCancel(true)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
         with(NotificationManagerCompat.from(this)) {

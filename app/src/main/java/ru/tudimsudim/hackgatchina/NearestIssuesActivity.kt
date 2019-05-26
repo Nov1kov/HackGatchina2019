@@ -40,7 +40,6 @@ class NearestIssuesActivity : AppCompatActivity(), IssueItemClick {
         }
 
         geo = GatchinaApplication.geoMaster
-        geo.init()
 
         val displayMetrics = DisplayMetrics()
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics)

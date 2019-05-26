@@ -1,10 +1,10 @@
 package ru.tudimsudim.hackgatchina
 
 import android.content.res.ColorStateList
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatActivity
 import android.util.DisplayMetrics
 import android.widget.Toast
 import com.bumptech.glide.Glide
@@ -13,7 +13,6 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.android.Main
 import ru.tudimsudim.hackgatchina.model.Issue
 import ru.tudimsudim.hackgatchina.presenter.HttpClient
-import java.lang.Exception
 
 class IssueActivity : AppCompatActivity() {
 
