@@ -15,6 +15,9 @@ import kotlinx.android.synthetic.main.activity_scrolling.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.android.Main
 import ru.tudimsudim.hackgatchina.presenter.HttpClient
+import android.content.DialogInterface
+import android.support.v7.app.AlertDialog
+
 
 @SuppressLint("ByteOrderMark")
 class NearestIssuesActivity : AppCompatActivity(), IssueItemClick {
@@ -26,7 +29,7 @@ class NearestIssuesActivity : AppCompatActivity(), IssueItemClick {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scrolling)
         fab.setOnClickListener { view ->
-            openNewIssue();
+            openDialog();
         }
 
         swipe_container.setColorSchemeResources(
@@ -43,7 +46,6 @@ class NearestIssuesActivity : AppCompatActivity(), IssueItemClick {
 
         val displayMetrics = DisplayMetrics()
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics)
-        val height = displayMetrics.heightPixels
         val width = displayMetrics.widthPixels
 
         recycler_view.layoutManager = LinearLayoutManager(this)
@@ -124,11 +126,19 @@ class NearestIssuesActivity : AppCompatActivity(), IssueItemClick {
         }
     }
 
+    private fun openDialog(){
+        val builder1 = AlertDialog.Builder(this)
+        builder1.setTitle(getString(R.string.what_about_issue))
+        val items = listOf(getString(R.string.about_good), getString(R.string.about_bad))
+        builder1.setItems(items.toTypedArray(), DialogInterface.OnClickListener { dialog, which ->
+            openNewIssue(which == 0)
+        })
+        builder1.show()
+    }
 
-    private fun openNewIssue() {
-        val message = "stub"
+    private fun openNewIssue(isPositive: Boolean) {
         val intent = Intent(this, NewIssueActivity::class.java).apply {
-            putExtra(EXTRA_MESSAGE, message)
+            putExtra("POSITIVE_KEY", isPositive)
         }
         startActivity(intent)
     }

@@ -21,4 +21,7 @@
     <string name="login_failed">"Login failed"</string>
     <string name="vote_success">Ваш голос учтен!</string>
     <string name="you_should_add_photo">Добавьте фото к вашей проблеме!</string>
+    <string name="what_about_issue">О чем хотите сообщите</string>
+    <string name="about_good">О хорошем</string>
+    <string name="about_bad">О плохом</string>
 </resources>

@@ -29,6 +29,8 @@ class NewIssueActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_issue)
 
+        val isPositive = intent.getBooleanExtra("POSITIVE_KEY", false)
+
         fab.setOnClickListener { view ->
             postIssue()
         }
