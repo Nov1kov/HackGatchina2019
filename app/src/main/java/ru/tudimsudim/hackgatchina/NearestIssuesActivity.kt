@@ -29,14 +29,14 @@ class NearestIssuesActivity : AppCompatActivity(), IssueItemClick {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scrolling)
         fab.setOnClickListener { view ->
-            openDialog();
+            openDialog()
         }
 
         swipe_container.setColorSchemeResources(
             R.color.colorPrimary,
             R.color.colorAccent,
             R.color.VoteColor
-        );
+        )
 
         swipe_container.setOnRefreshListener {
             updateIssues()

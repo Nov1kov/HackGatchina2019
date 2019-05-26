@@ -1,5 +1,6 @@
 package ru.tudimsudim.hackgatchina
 
+import android.annotation.SuppressLint
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -58,10 +59,16 @@ class IssuesAdapter(val screenWidth: Int, val listener: IssueItemClick) :
             issue_vote = itemView.findViewById(R.id.issue_vote)
         }
 
+        @SuppressLint("ResourceAsColor")
         fun bind(issue: Issue) {
             author?.text = issue.author
             description?.text = if (issue.title.isEmpty()) issue.text else issue.title
             issue_vote?.text = issue.users_like.count().toString()
+            if (issue.isPositive) {
+                this.itemView.setBackgroundColor(R.color.GoodIssue)
+            } else{
+                this.itemView.setBackgroundColor(R.color.BadIssue)
+            }
 
             if (image != null && issue.images.count() > 0) {
                 val imageUrl = HttpClient.address + "/images/" + issue.images.elementAt(0)
