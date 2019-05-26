@@ -15,10 +15,10 @@ import ru.tudimsudim.hackgatchina.model.Issue
 import ru.tudimsudim.hackgatchina.presenter.HttpClient
 import ru.tudimsudim.hackgatchina.presenter.HttpJavaUtils
 
+
 class NewIssueActivity : AppCompatActivity() {
 
     private lateinit var issue: Issue
-    private var imageUrl: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,7 +88,7 @@ class NewIssueActivity : AppCompatActivity() {
                 val imageUrl = String(it.data)
                 issue.images.add(imageUrl)
                 val resultMessage = this.getString(R.string.image_uploaded)
-                Toast.makeText(this, imageUrl, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, resultMessage, Toast.LENGTH_SHORT).show()
             },
                 {
                     val statusCode = if (it.networkResponse != null) it.networkResponse.statusCode else 0
