@@ -58,6 +58,7 @@
                         android:textColor="@color/VoteColor"
                         android:textSize="14sp"
                         android:id="@+id/issue_vote"
+                        android:paddingRight="8dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 

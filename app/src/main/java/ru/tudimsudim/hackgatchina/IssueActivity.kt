@@ -59,10 +59,6 @@ class IssueActivity : AppCompatActivity() {
             vote_fab.setImageResource(R.drawable.ic_ok)
             val color = ContextCompat.getColor(this, R.color.VoteColor)
             vote_fab.backgroundTintList = ColorStateList.valueOf(color)
-        }else{
-            vote_fab.setImageResource(R.drawable.ic_vote)
-            val color = ContextCompat.getColor(this, R.color.colorAccent)
-            vote_fab.backgroundTintList = ColorStateList.valueOf(color)
         }
     }
 

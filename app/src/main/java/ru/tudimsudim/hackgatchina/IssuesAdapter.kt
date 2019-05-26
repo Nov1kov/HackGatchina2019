@@ -48,20 +48,23 @@ class IssuesAdapter(val screenWidth: Int, val listener: IssueItemClick) :
         RecyclerView.ViewHolder(inflater.inflate(R.layout.issue_list_item, parent, false)) {
         var author: TextView? = null
         var description: TextView? = null
+        var issue_vote: TextView? = null
         var image: ImageView? = null
 
         init {
             author = itemView.findViewById(R.id.issue_author)
             description = itemView.findViewById(R.id.issue_description)
             image = itemView.findViewById(R.id.image_view)
+            issue_vote = itemView.findViewById(R.id.issue_vote)
         }
 
-        fun bind(movie: Issue) {
-            author?.text = movie.author
-            description?.text = movie.text
+        fun bind(issue: Issue) {
+            author?.text = issue.author
+            description?.text = issue.text
+            issue_vote?.text = issue.users_like.count().toString()
 
-            if (image != null && movie.images.count() > 0) {
-                val imageUrl = HttpClient.address + "/images/" + movie.images.elementAt(0)
+            if (image != null && issue.images.count() > 0) {
+                val imageUrl = HttpClient.address + "/images/" + issue.images.elementAt(0)
                 Glide
                     .with(image!!.context)
                     .load(imageUrl)
