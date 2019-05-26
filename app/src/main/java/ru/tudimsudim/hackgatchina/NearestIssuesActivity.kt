@@ -28,6 +28,17 @@ class NearestIssuesActivity : AppCompatActivity(), IssueItemClick {
         fab.setOnClickListener { view ->
             openNewIssue();
         }
+
+        swipe_container.setColorSchemeResources(
+            R.color.colorPrimary,
+            R.color.colorAccent,
+            R.color.VoteColor
+        );
+
+        swipe_container.setOnRefreshListener {
+            updateIssues()
+        }
+
         geo = GatchinaApplication.geoMaster
         geo.init()
 
@@ -71,25 +82,27 @@ class NearestIssuesActivity : AppCompatActivity(), IssueItemClick {
             RECORD_REQUEST_CODE
         )
     }
-/*
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         if (requestCode == RECORD_REQUEST_CODE) {
-
             if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-
                 Log.i("IPL", "Permission has been denied by user")
             } else {
-                Log.i("IPL", "Permission has been granted by user")
+                geo.init()
             }
         }
-    }﻿
-*/
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
 
-    // === RUNTIME PERMISSION
+// === RUNTIME PERMISSION
 
     override fun onResume() {
         super.onResume()
+        updateIssues()
+    }
+
+    private fun updateIssues() {
+        swipe_container.isRefreshing = true
         val coors = GatchinaApplication.geoMaster.getCoordinates()
         GlobalScope.launch(Dispatchers.Main) {
             try {
@@ -107,8 +120,11 @@ class NearestIssuesActivity : AppCompatActivity(), IssueItemClick {
             } catch (ex: Exception) {
                 ex.printStackTrace()
             }
+
+            swipe_container.isRefreshing = false
         }
     }
+
 
     private fun openNewIssue() {
         val message = "stub"
