@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v4.content.ContextCompat
+import android.util.DisplayMetrics
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_issue.*
@@ -22,6 +23,14 @@ class IssueActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_issue)
+
+        val displayMetrics = DisplayMetrics()
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics)
+        val height = displayMetrics.heightPixels
+        val width = displayMetrics.widthPixels
+
+        exists_issue_image.layoutParams.height = height / 2
+
         val issue_id = intent.getStringExtra(ID_ISSUE_KEY)
 
         val iss = GatchinaApplication.data.issue(issue_id)
