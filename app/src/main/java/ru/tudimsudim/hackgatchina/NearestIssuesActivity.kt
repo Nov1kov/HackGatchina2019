@@ -3,6 +3,7 @@ package ru.tudimsudim.hackgatchina
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.support.v4.app.ActivityCompat
@@ -19,7 +20,7 @@ import ru.tudimsudim.hackgatchina.presenter.HttpClient
 class NearestIssuesActivity : AppCompatActivity(), IssueItemClick {
 
     private lateinit var geo: GeoMaster
-    private lateinit var adapter : IssuesAdapter
+    private lateinit var adapter: IssuesAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,8 +55,7 @@ class NearestIssuesActivity : AppCompatActivity(), IssueItemClick {
     private val RECORD_REQUEST_CODE = 101
 
     private fun setupPermissions() {
-        if (GeoMasterHelper.shouldAskPermission(this))
-        {
+        if (GeoMasterHelper.shouldAskPermission(this)) {
             Log.i("PermissionDemo", "Permission to record denied")
             makeRequest()
         }
@@ -64,25 +64,27 @@ class NearestIssuesActivity : AppCompatActivity(), IssueItemClick {
     private fun makeRequest() {
         ActivityCompat.requestPermissions(
             this,
-            arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION),
+            arrayOf(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ),
             RECORD_REQUEST_CODE
         )
     }
 /*
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        when (requestCode) {
-            RECORD_REQUEST_CODE -> {
+        if (requestCode == RECORD_REQUEST_CODE) {
 
-                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
 
-                    Log.i("IPL", "Permission has been denied by user")
-                } else {
-                    Log.i("IPL", "Permission has been granted by user")
-                }
+                Log.i("IPL", "Permission has been denied by user")
+            } else {
+                Log.i("IPL", "Permission has been granted by user")
             }
         }
-    }﻿*/
+    }﻿
+*/
 
     // === RUNTIME PERMISSION
 
@@ -94,7 +96,7 @@ class NearestIssuesActivity : AppCompatActivity(), IssueItemClick {
                 withContext(Dispatchers.IO) {
                     GatchinaApplication.data.issues = HttpClient.getIssues(coors)
                 }
-            }catch (ex: Exception){
+            } catch (ex: Exception) {
                 ex.printStackTrace()
             }
 
@@ -102,7 +104,7 @@ class NearestIssuesActivity : AppCompatActivity(), IssueItemClick {
 
             try {
                 geo.updateGeofence(GatchinaApplication.data.issues)
-            }catch (ex: Exception){
+            } catch (ex: Exception) {
                 ex.printStackTrace()
             }
         }
