@@ -73,6 +73,7 @@ class IssueActivity : AppCompatActivity() {
                     HttpClient.vote(issue, userUid)
                 }
                 Toast.makeText(this@IssueActivity, getString(R.string.vote_success), Toast.LENGTH_SHORT).show()
+                issue.users_like.add(userUid)
                 reinvalidateButton()
             }catch (ex: Exception){
                 ex.printStackTrace()

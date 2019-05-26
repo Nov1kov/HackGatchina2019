@@ -9,7 +9,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.provider.AlarmClock.EXTRA_MESSAGE
-import android.support.annotation.RequiresApi
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -18,10 +17,7 @@ import android.util.Log
 import kotlinx.android.synthetic.main.activity_scrolling.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.android.Main
-import ru.tudimsudim.hackgatchina.model.Issue
 import ru.tudimsudim.hackgatchina.presenter.HttpClient
-import ru.tudimsudim.hackgatchina.presenter.HttpJavaUtils
-import java.lang.Exception
 
 @SuppressLint("ByteOrderMark")
 class NearestIssuesActivity : AppCompatActivity(), IssueItemClick {
@@ -29,7 +25,6 @@ class NearestIssuesActivity : AppCompatActivity(), IssueItemClick {
     private lateinit var geo: GeoMaster
     private lateinit var adapter : IssuesAdapter
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scrolling)
@@ -96,7 +91,6 @@ class NearestIssuesActivity : AppCompatActivity(), IssueItemClick {
 
     // === RUNTIME PERMISSION
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onResume() {
         super.onResume()
         GlobalScope.launch(Dispatchers.Main) {
