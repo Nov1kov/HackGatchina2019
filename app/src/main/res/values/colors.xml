@@ -9,4 +9,6 @@
     <color name="HintTextdColor">#757F8C</color>
     <color name="SecondHintTextdColor">#D6D9E4</color>
     <color name="VoteColor">#10C971</color>
+    <color name="GoodIssue">#10C971</color>
+    <color name="BadIssue">#FA2E69</color>
 </resources>
