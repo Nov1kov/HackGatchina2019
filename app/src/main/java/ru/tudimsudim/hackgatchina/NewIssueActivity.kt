@@ -14,7 +14,8 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_new_issue.*
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import kotlinx.coroutines.android.Main
 import ru.tudimsudim.hackgatchina.model.Issue
 import ru.tudimsudim.hackgatchina.presenter.HttpClient
 import ru.tudimsudim.hackgatchina.presenter.HttpJavaUtils
@@ -59,12 +60,14 @@ class NewIssueActivity : AppCompatActivity() {
         issue.coordinate = GatchinaApplication.geoMaster.getCoordinates()
         initAuthor()
 
-        launch {
+        GlobalScope.launch(Dispatchers.Main) {
             try {
-                val addr = HttpClient.getAddress(issue)
+                var addr = ""
+                withContext(Dispatchers.IO) {
+                    HttpClient.postIssue(issue)
+                    addr = HttpClient.getAddress(issue)
+                }
                 issue.address = addr
-                val issueId = HttpClient.postIssue(issue)
-                //issue.id = issueId
             } catch (ex: Exception) {
                 ex.printStackTrace()
             }

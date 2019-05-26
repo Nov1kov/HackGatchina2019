@@ -60,7 +60,7 @@ class IssuesAdapter(val screenWidth: Int, val listener: IssueItemClick) :
 
         fun bind(issue: Issue) {
             author?.text = issue.author
-            description?.text = issue.text
+            description?.text = if (issue.title.isEmpty()) issue.text else issue.title
             issue_vote?.text = issue.users_like.count().toString()
 
             if (image != null && issue.images.count() > 0) {
