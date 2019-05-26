@@ -52,7 +52,7 @@ object HttpClient {
 
     fun getIssues(coors: List<Double>): List<Issue> {
         var urlFull = "$address/issues"
-        if (coors.count() > 0){
+        if (coors.count() > 0) {
             urlFull += "/coordinate/" + coors[0] + ',' + coors[1]
         }
 
@@ -80,7 +80,7 @@ object HttpClient {
             }
     }
 
-    fun getIssueById(issueId:String): Issue {
+    fun getIssueById(issueId: String): Issue {
         val urlFull = "$address/issues/${issueId}"
 
         return URL(urlFull)
@@ -107,7 +107,7 @@ object HttpClient {
             }
     }
 
-    class Vote(val authorId : String)
+    class Vote(val authorId: String)
 
     fun vote(issue: Issue, userUid: String) {
         val urlFull = "$address/issues/vote/${issue.id}"
@@ -165,7 +165,6 @@ object HttpClient {
                     }
                     it.close()
                     response.toString()
-                   response.toString()
                 }
             }
 

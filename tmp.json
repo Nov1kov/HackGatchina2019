@@ -1,0 +1,155 @@
+{
+  "response": {
+    "GeoObjectCollection": {
+      "metaDataProperty": {
+        "GeocoderResponseMetaData": {
+          "request": "31.597576,53.771899",
+          "found": "3",
+          "results": "10",
+          "Point": {
+            "pos": "31.597576 53.771899"
+          }
+        }
+      },
+      "featureMember": [
+        {
+          "GeoObject": {
+            "metaDataProperty": {
+              "GeocoderMetaData": {
+                "kind": "area",
+                "text": "Беларусь, Могилёвская область, Кричевский район",
+                "precision": "other",
+                "Address": {
+                  "country_code": "BY",
+                  "formatted": "Беларусь, Могилёвская область, Кричевский район",
+                  "Components": [
+                    {
+                      "kind": "country",
+                      "name": "Беларусь"
+                    },
+                    {
+                      "kind": "province",
+                      "name": "Могилёвская область"
+                    },
+                    {
+                      "kind": "area",
+                      "name": "Кричевский район"
+                    }
+                  ]
+                },
+                "AddressDetails": {
+                  "Country": {
+                    "AddressLine": "Беларусь, Могилёвская область, Кричевский район",
+                    "CountryNameCode": "BY",
+                    "CountryName": "Беларусь",
+                    "AdministrativeArea": {
+                      "AdministrativeAreaName": "Могилёвская область",
+                      "SubAdministrativeArea": {
+                        "SubAdministrativeAreaName": "Кричевский район"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Могилёвская область, Беларусь",
+            "name": "Кричевский район",
+            "boundedBy": {
+              "Envelope": {
+                "lowerCorner": "31.32217 53.604145",
+                "upperCorner": "31.931785 53.878649"
+              }
+            },
+            "Point": {
+              "pos": "31.639194 53.749743"
+            }
+          }
+        },
+        {
+          "GeoObject": {
+            "metaDataProperty": {
+              "GeocoderMetaData": {
+                "kind": "province",
+                "text": "Беларусь, Могилёвская область",
+                "precision": "other",
+                "Address": {
+                  "country_code": "BY",
+                  "formatted": "Беларусь, Могилёвская область",
+                  "Components": [
+                    {
+                      "kind": "country",
+                      "name": "Беларусь"
+                    },
+                    {
+                      "kind": "province",
+                      "name": "Могилёвская область"
+                    }
+                  ]
+                },
+                "AddressDetails": {
+                  "Country": {
+                    "AddressLine": "Беларусь, Могилёвская область",
+                    "CountryNameCode": "BY",
+                    "CountryName": "Беларусь",
+                    "AdministrativeArea": {
+                      "AdministrativeAreaName": "Могилёвская область"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Беларусь",
+            "name": "Могилёвская область",
+            "boundedBy": {
+              "Envelope": {
+                "lowerCorner": "28.073008 52.674618",
+                "upperCorner": "32.776533 54.471378"
+              }
+            },
+            "Point": {
+              "pos": "30.58132 53.70938"
+            }
+          }
+        },
+        {
+          "GeoObject": {
+            "metaDataProperty": {
+              "GeocoderMetaData": {
+                "kind": "country",
+                "text": "Беларусь",
+                "precision": "other",
+                "Address": {
+                  "country_code": "BY",
+                  "formatted": "Беларусь",
+                  "Components": [
+                    {
+                      "kind": "country",
+                      "name": "Беларусь"
+                    }
+                  ]
+                },
+                "AddressDetails": {
+                  "Country": {
+                    "AddressLine": "Беларусь",
+                    "CountryNameCode": "BY",
+                    "CountryName": "Беларусь"
+                  }
+                }
+              }
+            },
+            "name": "Беларусь",
+            "boundedBy": {
+              "Envelope": {
+                "lowerCorner": "23.178322 51.262035",
+                "upperCorner": "32.776533 56.171728"
+              }
+            },
+            "Point": {
+              "pos": "27.701393 52.858248"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
