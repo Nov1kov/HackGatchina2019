@@ -9,47 +9,52 @@
         android:layout_height="match_parent"
         tools:context=".NewIssueActivity">
 
-        <android.support.v7.widget.CardView
-                android:layout_weight="1.2"
-                android:layout_margin="16dp"
-                app:cardElevation="6dp"
-                app:cardCornerRadius="4dp"
+    <android.support.v7.widget.CardView
+            android:id="@+id/photo_card_view"
+            android:layout_weight="1.2"
+            android:layout_margin="16dp"
+            app:cardElevation="6dp"
+            app:cardCornerRadius="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+    >
+
+        <FrameLayout
+                android:id="@+id/photo_hint"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-        >
+                android:layout_height="match_parent">
 
-            <FrameLayout
-                    android:id="@+id/photo_hint"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+            <LinearLayout
+                    android:paddingTop="16dp"
+                    android:id="@+id/photo_container"
+                    tools:layout_height="@dimen/preview_image_size"
+                    tools:padding="@dimen/photo_preview_padding"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
-                <ImageView
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_photo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-
-                <TextView
-                        android:gravity="center"
-                        android:layout_gravity="bottom"
-                        android:padding="24dp"
-                        android:textSize="14sp"
-                        android:text="@string/photo_hint"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                />
-
-            </FrameLayout>
+            </LinearLayout>
 
             <ImageView
-                    android:id="@+id/issue_image"
-                    android:scaleType="centerCrop"
-                    tools:src="@android:color/darker_gray"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_photo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            <TextView
+                    android:gravity="center"
+                    android:layout_gravity="bottom"
+                    android:padding="24dp"
+                    android:textSize="14sp"
+                    android:text="@string/photo_hint"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
             />
 
-        </android.support.v7.widget.CardView>
+        </FrameLayout>
+
+    </android.support.v7.widget.CardView>
 
     <LinearLayout
             android:layout_weight="0.8"

@@ -7,6 +7,8 @@ import android.preference.PreferenceManager
 import android.provider.MediaStore
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_new_issue.*
@@ -27,7 +29,8 @@ class NewIssueActivity : AppCompatActivity() {
         fab.setOnClickListener { view ->
             postIssue()
         }
-        issue_image.setOnClickListener {
+
+        photo_card_view.setOnClickListener {
             dispatchTakePictureIntent()
         }
 
@@ -42,7 +45,7 @@ class NewIssueActivity : AppCompatActivity() {
     }
 
     private fun postIssue() {
-        if (issue.images.isEmpty()){
+        if (issue.images.isEmpty()) {
             val toastMessage = getString(R.string.you_should_add_photo)
             Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show()
             return
@@ -81,14 +84,26 @@ class NewIssueActivity : AppCompatActivity() {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
             val imageBitmap = data.extras.get("data") as Bitmap
 
+            val imageView = ImageView(this)
+            val padding = resources.getDimensionPixelSize(R.dimen.photo_preview_padding)
+            val size = resources.getDimensionPixelSize(R.dimen.preview_image_size) + 2 * padding
+            imageView.setLayoutParams(
+                LinearLayout.LayoutParams(
+                    size,
+                    size
+                )
+            )
+            imageView.layoutParams.height = size
+            imageView.layoutParams.width = size
+            imageView.setPadding(padding, padding, padding, padding)
+
             Glide
                 .with(this)
                 .load(imageBitmap)
                 .centerCrop()
-                .into(issue_image);
+                .into(imageView);
 
-            photo_hint.visibility = View.GONE
-            issue_image.visibility = View.VISIBLE
+            photo_container.addView(imageView)
             HttpJavaUtils.uploadBitmap(this, imageBitmap, issue, {
                 val imageUrl = String(it.data)
                 issue.images.add(imageUrl)
