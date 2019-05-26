@@ -76,6 +76,7 @@ class NewIssueActivity : AppCompatActivity() {
         issue.coordinate = GatchinaApplication.geoMaster.getCoordinates()
         issue.isPositive = isPositive
         initAuthor()
+        issue.users_like.add(issue.authorUid)
 
         GlobalScope.launch(Dispatchers.Main) {
             try {
