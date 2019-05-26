@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#FFFFFF</color>
     <color name="BackgroundColor">#F9FAFB</color>
-    <color name="TextdColor">#171033</color>
+    <color name="TextColor">#171033</color>
     <color name="SecondTextdColor">#3B4148</color>
     <color name="HintTextdColor">#757F8C</color>
     <color name="SecondHintTextdColor">#D6D9E4</color>

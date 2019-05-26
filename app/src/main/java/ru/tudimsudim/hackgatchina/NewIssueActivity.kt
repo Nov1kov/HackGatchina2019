@@ -42,6 +42,11 @@ class NewIssueActivity : AppCompatActivity() {
     }
 
     private fun postIssue() {
+        if (issue.images.isEmpty()){
+            val toastMessage = getString(R.string.you_should_add_photo)
+            Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show()
+            return
+        }
         issue.title = issue_header.text.toString()
         issue.text = issue_description.text.toString()
         issue.coordinate = GatchinaApplication.geoMaster.getCoordinates()

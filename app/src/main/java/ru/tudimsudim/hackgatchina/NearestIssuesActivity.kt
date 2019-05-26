@@ -88,10 +88,11 @@ class NearestIssuesActivity : AppCompatActivity(), IssueItemClick {
 
     override fun onResume() {
         super.onResume()
+        val coors = GatchinaApplication.geoMaster.getCoordinates()
         GlobalScope.launch(Dispatchers.Main) {
             try {
                 withContext(Dispatchers.IO) {
-                    GatchinaApplication.data.issues = HttpClient.getIssues()
+                    GatchinaApplication.data.issues = HttpClient.getIssues(coors)
                 }
             }catch (ex: Exception){
                 ex.printStackTrace()

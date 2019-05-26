@@ -34,8 +34,8 @@ class GeoMaster(val context: Context) {
     private var fusedLocationClient: FusedLocationProviderClient? = null
 
     val locationRequest = LocationRequest.create()?.apply {
-        interval = 10000
-        fastestInterval = 5000
+        interval = 5000
+        fastestInterval = 1000
         priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
     }
 

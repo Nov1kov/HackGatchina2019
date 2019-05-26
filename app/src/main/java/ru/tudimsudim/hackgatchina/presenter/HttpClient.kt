@@ -50,9 +50,11 @@ object HttpClient {
             }
     }
 
-    fun getIssues(): List<Issue> {
-        val urlFull = "$address/issues"
-
+    fun getIssues(coors: List<Double>): List<Issue> {
+        var urlFull = "$address/issues"
+        if (coors.count() > 0){
+            urlFull += "/coordinate/" + coors[0] + ',' + coors[1]
+        }
 
         return URL(urlFull)
             .openConnection()
