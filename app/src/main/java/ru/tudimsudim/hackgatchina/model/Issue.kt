@@ -9,10 +9,11 @@ data class Issue(
     var author: String = "",
     var authorUid: String = "",
     var authorEmail: String = "",
+    var users_like: MutableCollection<String> = mutableListOf(),
     var address: String = ""
-) {
-    val longitude: Double
+){
+    val longitude : Double
         get() = if (coordinate.count() == 2) coordinate[1] else 0.0
-    val latitude: Double
+    val latitude : Double
         get() = if (coordinate.count() == 2) coordinate[0] else 0.0
 }

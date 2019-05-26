@@ -8,14 +8,11 @@ import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.Location
-import android.os.Build
-import android.support.annotation.RequiresApi
 import android.support.v4.content.ContextCompat
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.Task
 import ru.tudimsudim.hackgatchina.model.Issue
-import java.util.stream.Collectors
 
 class GeoMaster(val context: Context) {
 
@@ -62,13 +59,12 @@ class GeoMaster(val context: Context) {
         )
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("MissingPermission")
     fun updateGeofence(fences: List<Issue>) {
         geofencingClient.removeGeofences(geofencePendingIntent)
         val collect = fences.filter {
             it.coordinate.count() == 2
-        }.stream().map { s ->
+        }.map { s ->
             Geofence.Builder()
                 // Set the request ID of the geofence. This is a string to identify this
                 // geofence.
@@ -87,7 +83,7 @@ class GeoMaster(val context: Context) {
 
                 // Create the geofence.
                 .build()
-        }.collect(Collectors.toList())
+        }
 
         if (collect.count() == 0) {
             return

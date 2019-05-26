@@ -3,11 +3,11 @@ package ru.tudimsudim.hackgatchina
 import android.content.res.ColorStateList
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.v4.content.ContextCompat
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_issue.*
-import kotlinx.android.synthetic.main.activity_new_issue.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.android.Main
 import ru.tudimsudim.hackgatchina.model.Issue
@@ -17,6 +17,7 @@ import java.lang.Exception
 class IssueActivity : AppCompatActivity() {
 
     private lateinit var issue: Issue
+    private lateinit var userUid: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,11 +30,10 @@ class IssueActivity : AppCompatActivity() {
             iss
         }
 
-        if (!canVote()){
-            vote_fab.setImageResource(R.drawable.ic_ok)
-            val color = ContextCompat.getColor(this, R.color.VoteColor)
-            vote_fab.backgroundTintList = ColorStateList.valueOf(color)
-        }
+        val sharedPref = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        userUid = sharedPref.getString("uid", "")
+
+        reinvalidateButton()
 
         vote_fab.setOnClickListener {
             if (canVote())
@@ -54,13 +54,27 @@ class IssueActivity : AppCompatActivity() {
         exists_issue_description.text = issue.text
     }
 
+    private fun reinvalidateButton() {
+        if (!canVote()){
+            vote_fab.setImageResource(R.drawable.ic_ok)
+            val color = ContextCompat.getColor(this, R.color.VoteColor)
+            vote_fab.backgroundTintList = ColorStateList.valueOf(color)
+        }else{
+            vote_fab.setImageResource(R.drawable.ic_vote)
+            val color = ContextCompat.getColor(this, R.color.colorAccent)
+            vote_fab.backgroundTintList = ColorStateList.valueOf(color)
+        }
+    }
+
     private fun vote(){
         GlobalScope.launch(Dispatchers.Main) {
             try {
                 withContext(Dispatchers.IO) {
-                    HttpClient.vote(issue)
+                    HttpClient.vote(issue, userUid)
                 }
                 Toast.makeText(this@IssueActivity, getString(R.string.vote_success), Toast.LENGTH_SHORT).show()
+                issue.users_like.add(userUid)
+                reinvalidateButton()
             }catch (ex: Exception){
                 ex.printStackTrace()
             }
@@ -68,7 +82,7 @@ class IssueActivity : AppCompatActivity() {
     }
 
     private fun canVote(): Boolean {
-        return true
+        return !issue.users_like.contains(userUid)
     }
 
     companion object {

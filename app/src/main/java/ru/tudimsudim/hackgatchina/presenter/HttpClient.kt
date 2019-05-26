@@ -78,8 +78,12 @@ object HttpClient {
             }
     }
 
-    fun vote(issue: Issue) {
+    class Vote(val authorId : String)
+
+    fun vote(issue: Issue, userUid: String) {
         val urlFull = "$address/issues/vote/${issue.id}"
+        val gson = Gson()
+        val body = gson.toJson(Vote(userUid))
 
         return URL(urlFull)
             .openConnection()
@@ -88,6 +92,10 @@ object HttpClient {
             }.apply {
                 setRequestProperty("Content-Type", "application/json; charset=utf-8")
                 requestMethod = "POST"
+                doOutput = true
+                val outputWriter = OutputStreamWriter(outputStream)
+                outputWriter.write(body)
+                outputWriter.flush()
             }.let {
                 if (it.responseCode == 200) it.inputStream else it.errorStream
             }.let { streamToRead ->
@@ -128,6 +136,7 @@ object HttpClient {
                     }
                     it.close()
                     response.toString()
+                   response.toString()
                 }
             }
 
