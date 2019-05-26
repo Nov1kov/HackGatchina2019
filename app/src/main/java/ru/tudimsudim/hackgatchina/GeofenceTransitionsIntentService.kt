@@ -9,15 +9,13 @@ import android.support.v4.app.NotificationManagerCompat
 import android.util.Log
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingEvent
+import ru.tudimsudim.hackgatchina.model.Issue
+import ru.tudimsudim.hackgatchina.presenter.HttpClient
 
 class GeofenceTransitionsIntentService : IntentService("Geofence-Service") {
     override fun onHandleIntent(intent: Intent?) {
         val geofencingEvent = GeofencingEvent.fromIntent(intent)
         if (geofencingEvent.hasError()) {
-//            val errorMessage = GeofenceErrorMessages.getErrorString(
-//                this,
-//                geofencingEvent.errorCode
-//            )
             Log.e(TAG, (geofencingEvent.errorCode + geofencingEvent.geofenceTransition).toString())
             return
         }
@@ -34,23 +32,16 @@ class GeofenceTransitionsIntentService : IntentService("Geofence-Service") {
             // multiple geofences.
             val triggeringGeofences = geofencingEvent.triggeringGeofences
 
-            // Get the transition details as a String.
-            val geofenceTransitionDetails = getGeofenceTransitionDetails(
-                this,
-                geofenceTransition,
-                triggeringGeofences
-            )
-
             // Send notification and log the transition details.
-            sendNotification(geofenceTransitionDetails)
-            Log.i(TAG, geofenceTransitionDetails)
+            sendNotification(triggeringGeofences)
         } else {
             // Log the error.
             Log.e(TAG, "Alarma! Geifencing errore: $geofenceTransition")
         }
     }
 
-    private fun sendNotification(geofenceTransitionDetails: String?) {
+    private fun sendNotification(triggeringGeofences: MutableList<Geofence>) {
+        var issue = HttpClient.getIssueById(triggeringGeofences.get(0).requestId)
 
         val intent = Intent(this, NearestIssuesActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -59,11 +50,11 @@ class GeofenceTransitionsIntentService : IntentService("Geofence-Service") {
 
         var builder = NotificationCompat.Builder(this, "main_id")
             .setSmallIcon(R.mipmap.icons8_fire_truck_48)
-            .setContentTitle("Рядом есть проблема")
-            .setContentText(geofenceTransitionDetails)
+            .setContentTitle("Рядом есть проблема! " + issue.title)
+            .setContentText(issue.text + " - " + issue.address)
             .setStyle(
                 NotificationCompat.BigTextStyle()
-                    .bigText(geofenceTransitionDetails)
+                    .bigText(issue.text + " - " + issue.address)
             )
             .setContentIntent(pendingIntent)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -74,13 +65,8 @@ class GeofenceTransitionsIntentService : IntentService("Geofence-Service") {
         }
     }
 
-    private fun getGeofenceTransitionDetails(
-        geofenceTransitionsIntentService: GeofenceTransitionsIntentService,
-        geofenceTransition: Int,
-        triggeringGeofences: List<Geofence>
-    ): String? {
-        println(triggeringGeofences.get(0).requestId)
-        return triggeringGeofences.get(0).requestId
+    private fun getIssue(triggeringGeofences: List<Geofence>): Issue {
+        return HttpClient.getIssueById(triggeringGeofences.get(0).requestId)
     }
 
 }

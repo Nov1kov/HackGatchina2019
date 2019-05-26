@@ -15,7 +15,7 @@ import java.net.URL
 object HttpClient {
 
     val address = "https://g.lp-app.com"
-    val yandex = "https://geocode-maps.yandex.ru/1.x"
+    private val yandex = "https://geocode-maps.yandex.ru/1.x"
 
     fun postIssue(issue: Issue): String {
         val urlFull = "$address/issues"
@@ -53,6 +53,32 @@ object HttpClient {
     fun getIssues(): List<Issue> {
         val urlFull = "$address/issues"
 
+        return URL(urlFull)
+            .openConnection()
+            .let {
+                it as HttpURLConnection
+            }.apply {
+                setRequestProperty("Content-Type", "application/json; charset=utf-8")
+                requestMethod = "GET"
+            }.let {
+                if (it.responseCode == 200) it.inputStream else it.errorStream
+            }.let { streamToRead ->
+                BufferedReader(InputStreamReader(streamToRead)).use {
+                    val response = StringBuffer()
+                    var inputLine = it.readLine()
+                    while (inputLine != null) {
+                        response.append(inputLine)
+                        inputLine = it.readLine()
+                    }
+                    it.close()
+                    val gson = Gson()
+                    gson.fromJson(response.toString())
+                }
+            }
+    }
+
+    fun getIssueById(issueId:String): Issue {
+        val urlFull = "$address/issues/${issueId}"
 
         return URL(urlFull)
             .openConnection()
