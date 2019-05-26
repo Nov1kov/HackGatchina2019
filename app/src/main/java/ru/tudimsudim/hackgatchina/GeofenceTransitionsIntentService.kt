@@ -4,6 +4,7 @@ import android.app.IntentService
 import android.app.PendingIntent
 import android.content.ContentValues.TAG
 import android.content.Intent
+import android.preference.PreferenceManager
 import android.support.v4.app.NotificationCompat
 import android.support.v4.app.NotificationManagerCompat
 import android.util.Log
@@ -42,6 +43,11 @@ class GeofenceTransitionsIntentService : IntentService("Geofence-Service") {
 
     private fun sendNotification(requestId: String) {
         var issue = HttpClient.getIssueById(requestId)
+        val uid = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+            .getString("uid", "")
+        if (issue.users_like.contains(uid)){
+            return
+        }
 
         val intent = Intent(this, IssueActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
