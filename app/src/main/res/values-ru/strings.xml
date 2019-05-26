@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="header_issue_hint">Суть проблемы</string>
+    <string name="header_issue_hint">Тема</string>
     <string name="issue_description">Подробное описание</string>
-    <string name="image_uploaded">Картинка загружена</string>
+    <string name="image_uploaded">Фото загружено</string>
     <string name="photo_hint">Сфотографировать или загрузить фото</string>
     <string name="vote_success">Ваш голос учтен!</string>
     <string name="you_should_add_photo">Добавьте фото к вашей проблеме!</string>
     <string name="what_about_issue">О чем хотите сообщите</string>
     <string name="about_good">О хорошем</string>
     <string name="about_bad">О плохом</string>
+    <string name="enter_title">Введите тему</string>
+    <string name="enter_description">Введите описание</string>
 </resources>

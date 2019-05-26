@@ -58,6 +58,19 @@ class NewIssueActivity : AppCompatActivity() {
             Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show()
             return
         }
+
+        if (issue_header.text.isEmpty()){
+            val toastMessage = getString(R.string.enter_title)
+            Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (issue_description.text.isEmpty()){
+            val toastMessage = getString(R.string.enter_description)
+            Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show()
+            return
+        }
+
         issue.title = issue_header.text.toString()
         issue.text = issue_description.text.toString()
         issue.coordinate = GatchinaApplication.geoMaster.getCoordinates()
