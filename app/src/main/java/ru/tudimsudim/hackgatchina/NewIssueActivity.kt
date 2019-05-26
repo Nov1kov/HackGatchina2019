@@ -24,12 +24,13 @@ import ru.tudimsudim.hackgatchina.presenter.HttpJavaUtils
 class NewIssueActivity : AppCompatActivity() {
 
     private lateinit var issue: Issue
+    private var isPositive: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_issue)
 
-        val isPositive = intent.getBooleanExtra("POSITIVE_KEY", false)
+        isPositive = intent.getBooleanExtra("POSITIVE_KEY", false)
 
         fab.setOnClickListener { view ->
             postIssue()
@@ -60,6 +61,7 @@ class NewIssueActivity : AppCompatActivity() {
         issue.title = issue_header.text.toString()
         issue.text = issue_description.text.toString()
         issue.coordinate = GatchinaApplication.geoMaster.getCoordinates()
+        issue.isPositive = isPositive
         initAuthor()
 
         GlobalScope.launch(Dispatchers.Main) {
