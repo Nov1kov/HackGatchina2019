@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.provider.MediaStore
 import android.support.v7.app.AppCompatActivity
+import android.text.InputType
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -35,6 +37,8 @@ class NewIssueActivity : AppCompatActivity() {
         }
 
         issue = Issue()
+        issue_description.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        issue_description.setRawInputType(InputType.TYPE_CLASS_TEXT);
     }
 
     private fun initAuthor() {

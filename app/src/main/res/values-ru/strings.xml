@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="header_issue_hint">Заголовок</string>
-    <string name="issue_description">Описание проблемы</string>
+    <string name="header_issue_hint">Суть проблемы</string>
+    <string name="issue_description">Подробное описание</string>
     <string name="image_uploaded">Картинка загружена</string>
     <string name="photo_hint">Сфотографировать или загрузить фото</string>
     <string name="vote_success">Ваш голос учтен!</string>
