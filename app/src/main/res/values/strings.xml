@@ -3,7 +3,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_new_issue">NewIssue</string>
     <string name="header_issue_hint">Тема</string>
-    <string name="issue_description">Подробное описание</string>
+    <string name="issue_description">Подробное описание или предложения</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
@@ -21,9 +21,9 @@
     <string name="login_failed">"Login failed"</string>
     <string name="vote_success">Ваш голос учтен!</string>
     <string name="you_should_add_photo">Добавьте фото к вашей проблеме!</string>
-    <string name="what_about_issue">О чем хотите сообщите</string>
-    <string name="about_good">О хорошем</string>
-    <string name="about_bad">О плохом</string>
+    <string name="what_about_issue">О чем хотите сообщить</string>
+    <string name="about_good">👍 О хорошем</string>
+    <string name="about_bad">😢 О плохом</string>
     <string name="enter_title">Введите тему</string>
     <string name="enter_description">Введите описание</string>
 </resources>

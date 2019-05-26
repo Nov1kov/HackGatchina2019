@@ -11,7 +11,7 @@ data class Issue(
     var authorEmail: String = "",
     var users_like: MutableCollection<String> = mutableListOf(),
     var address: String = "",
-    var isPositive: Boolean= true
+    var is_positive: Boolean= true
 ){
     val longitude : Double
         get() = if (coordinate.count() == 2) coordinate[1] else 0.0

@@ -6,7 +6,7 @@
         android:layout_marginRight="24dp"
         android:layout_marginBottom="@dimen/issue_item_vertical_padding"
         android:layout_width="match_parent"
-        app:cardCornerRadius="4dp"
+        app:cardCornerRadius="8dp"
         app:cardElevation="6dp"
         android:layout_height="300dp">
 
@@ -75,6 +75,16 @@
         </LinearLayout>
 
     </LinearLayout>
+
+
+    <TextView
+            android:id="@+id/is_positive"
+            android:textSize="24sp"
+            android:layout_margin="16dp"
+            android:layout_gravity="right|top"
+            tools:text="👍"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
 
 </android.support.v7.widget.CardView>

@@ -7,7 +7,6 @@ import android.preference.PreferenceManager
 import android.provider.MediaStore
 import android.support.v7.app.AppCompatActivity
 import android.text.InputType
-import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -74,7 +73,7 @@ class NewIssueActivity : AppCompatActivity() {
         issue.title = issue_header.text.toString()
         issue.text = issue_description.text.toString()
         issue.coordinate = GatchinaApplication.geoMaster.getCoordinates()
-        issue.isPositive = isPositive
+        issue.is_positive = isPositive
         initAuthor()
         issue.users_like.add(issue.authorUid)
 

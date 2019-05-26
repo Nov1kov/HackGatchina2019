@@ -49,6 +49,7 @@ class IssuesAdapter(val screenWidth: Int, val listener: IssueItemClick) :
         var author: TextView? = null
         var description: TextView? = null
         var issue_vote: TextView? = null
+        var is_positive: TextView? = null
         var image: ImageView? = null
 
         init {
@@ -56,13 +57,14 @@ class IssuesAdapter(val screenWidth: Int, val listener: IssueItemClick) :
             description = itemView.findViewById(R.id.issue_description)
             image = itemView.findViewById(R.id.image_view)
             issue_vote = itemView.findViewById(R.id.issue_vote)
+            is_positive = itemView.findViewById(R.id.is_positive)
         }
 
         fun bind(issue: Issue) {
             author?.text = issue.author
             description?.text = if (issue.title.isEmpty()) issue.text else issue.title
             issue_vote?.text = issue.users_like.count().toString()
-
+            is_positive?.text = if (issue.is_positive) "\uD83D\uDC4D" else "\uD83D\uDE22"
             if (image != null && issue.images.count() > 0) {
                 val imageUrl = HttpClient.address + "/images/" + issue.images.elementAt(0)
                 Glide
