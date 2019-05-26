@@ -14,8 +14,8 @@
 
     <ImageView
             android:src="@drawable/ic_gatchina"
-            android:layout_width="84dp"
-            android:layout_height="137dp"
+            android:layout_width="120dp"
+            android:layout_height="194dp"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
             android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"

@@ -104,8 +104,9 @@ class NearestIssuesActivity : AppCompatActivity(), IssueItemClick {
 
     private fun updateIssues() {
         swipe_container.isRefreshing = true
-        val coors = GatchinaApplication.geoMaster.getCoordinates()
         GlobalScope.launch(Dispatchers.Main) {
+            delay(200)
+            val coors = GatchinaApplication.geoMaster.getCoordinates()
             try {
                 withContext(Dispatchers.IO) {
                     GatchinaApplication.data.issues = HttpClient.getIssues(coors)
