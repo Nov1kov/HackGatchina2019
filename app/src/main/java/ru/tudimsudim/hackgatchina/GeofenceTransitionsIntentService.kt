@@ -9,7 +9,6 @@ import android.support.v4.app.NotificationManagerCompat
 import android.util.Log
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingEvent
-import ru.tudimsudim.hackgatchina.model.Issue
 import ru.tudimsudim.hackgatchina.presenter.HttpClient
 
 class GeofenceTransitionsIntentService : IntentService("Geofence-Service") {
@@ -33,19 +32,22 @@ class GeofenceTransitionsIntentService : IntentService("Geofence-Service") {
             val triggeringGeofences = geofencingEvent.triggeringGeofences
 
             // Send notification and log the transition details.
-            sendNotification(triggeringGeofences)
+            var requestId = triggeringGeofences.get(0).requestId
+            sendNotification(requestId)
         } else {
             // Log the error.
             Log.e(TAG, "Alarma! Geifencing errore: $geofenceTransition")
         }
     }
 
-    private fun sendNotification(triggeringGeofences: MutableList<Geofence>) {
-        var issue = HttpClient.getIssueById(triggeringGeofences.get(0).requestId)
+    private fun sendNotification(requestId: String) {
+        var issue = HttpClient.getIssueById(requestId)
 
-        val intent = Intent(this, NearestIssuesActivity::class.java).apply {
+        val intent = Intent(this, IssueActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
+        intent.putExtra(IssueActivity.ID_ISSUE_KEY, issue.id)
+
         val pendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
 
         var builder = NotificationCompat.Builder(this, "main_id")
@@ -63,10 +65,6 @@ class GeofenceTransitionsIntentService : IntentService("Geofence-Service") {
             // notificationId is a unique int for each notification that you must define
             notify(Math.random().toInt(), builder.build())
         }
-    }
-
-    private fun getIssue(triggeringGeofences: List<Geofence>): Issue {
-        return HttpClient.getIssueById(triggeringGeofences.get(0).requestId)
     }
 
 }
