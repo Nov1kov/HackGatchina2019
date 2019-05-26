@@ -49,6 +49,8 @@ class NewIssueActivity : AppCompatActivity() {
 
         launch {
             try {
+                val addr = HttpClient.getAddress(issue)
+                issue.address = addr
                 val issueId = HttpClient.postIssue(issue)
                 //issue.id = issueId
             } catch (ex: Exception) {
